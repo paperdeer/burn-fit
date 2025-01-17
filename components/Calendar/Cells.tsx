@@ -16,11 +16,13 @@ interface CalendarCellsProps {
 
 const NUM_OF_COLUMS = 7;
 
-const CalendarCells = ({ calendarCell, selectedDate, onChangeSelectedDate }: CalendarCellsProps) => {
+const CalendarCells = ({ calendarCell, selectedDate, onChangeSelectedDate, calendarType }: CalendarCellsProps) => {
   const color = useThemeColor({}, 'text');
 
   const isToday = (date: Date) =>
     new Date(selectedDate.year, selectedDate.month - 1, selectedDate.day).toString() === date.toString();
+
+  const isHorizonalMode = calendarType === 'WEEK';
 
   return (
     <FlatList
@@ -41,14 +43,21 @@ const CalendarCells = ({ calendarCell, selectedDate, onChangeSelectedDate }: Cal
           </ThemedText>
         </ThemedView>
       )}
-      numColumns={NUM_OF_COLUMS}
-      scrollEnabled={false}
+      scrollEnabled={isHorizonalMode}
+      horizontal={isHorizonalMode}
+      numColumns={!isHorizonalMode ? NUM_OF_COLUMS : undefined}
+      key={`${isHorizonalMode}-${calendarCell.toString()}`}
       style={{
         marginTop: 4,
+        maxHeight: calendarType === 'WEEK' ? 50 : 'auto',
+        flexDirection: 'row',
+        overflowX: 'scroll',
       }}
-      columnWrapperStyle={{
-        gap: 4,
-      }}
+      columnWrapperStyle={
+        !isHorizonalMode && {
+          gap: 4,
+        }
+      }
       contentContainerStyle={{
         gap: 4,
       }}
