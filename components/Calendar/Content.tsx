@@ -14,10 +14,16 @@ interface CalendarContentProps {
   selectedDate: CalendarDate;
   calendarDate: CalendarDate;
   onChangeSelectedDate: (date: Date) => void;
+  onChangeCalendarDate: (date: Date) => void;
 }
 const NUM_OF_COLUMS = 7;
 
-const CalendarContent = ({ selectedDate, calendarDate, onChangeSelectedDate }: CalendarContentProps) => {
+const CalendarContent = ({
+  selectedDate,
+  calendarDate,
+  onChangeSelectedDate,
+  onChangeCalendarDate,
+}: CalendarContentProps) => {
   const color = useThemeColor({}, 'text');
   const calendarCell = useMemo(() => createCalendarCell(calendarDate), [calendarDate.year, calendarDate.month]);
 
@@ -72,7 +78,9 @@ const CalendarContent = ({ selectedDate, calendarDate, onChangeSelectedDate }: C
         calendarCell={calendarCell}
         selectedDate={selectedDate}
         calendarType={calendarType}
+        calendarDate={calendarDate}
         onChangeSelectedDate={onChangeSelectedDate}
+        onChangeCalendarDate={onChangeCalendarDate}
       />
       <ThemedView style={[styles.calendarContentWrapper, { borderTopColor: color }]}>
         <GestureDetector gesture={gesture}>

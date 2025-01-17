@@ -4,19 +4,29 @@ import { CalendarCell } from '@/utils/calendar';
 import { ThemedText } from '../ThemedText';
 import { CalendarDate } from '@/hooks/useCalendar';
 import { useThemeColor } from '@/hooks/useThemeColor';
+import { useMemo } from 'react';
 
 export type CalendarType = 'MONTH' | 'WEEK';
 
 interface CalendarCellsProps {
   calendarCell: CalendarCell[];
   selectedDate: CalendarDate;
-  onChangeSelectedDate: (date: Date) => void;
+  calendarDate: CalendarDate;
   calendarType: CalendarType;
+  onChangeSelectedDate: (date: Date) => void;
+  onChangeCalendarDate: (date: Date) => void;
 }
 
 const NUM_OF_COLUMS = 7;
 
-const CalendarCells = ({ calendarCell, selectedDate, onChangeSelectedDate, calendarType }: CalendarCellsProps) => {
+const CalendarCells = ({
+  calendarCell,
+  selectedDate,
+  calendarDate,
+  calendarType,
+  onChangeSelectedDate,
+  onChangeCalendarDate,
+}: CalendarCellsProps) => {
   const color = useThemeColor({}, 'text');
 
   const isToday = (date: Date) =>
@@ -24,9 +34,31 @@ const CalendarCells = ({ calendarCell, selectedDate, onChangeSelectedDate, calen
 
   const isHorizonalMode = calendarType === 'WEEK';
 
+  const selectedWeek = useMemo(() => {
+    if (!isHorizonalMode) return calendarCell;
+
+    const selectedDateIndex = calendarCell.findIndex(
+      ({ date }) =>
+        new Date(calendarDate.year, calendarDate.month - 1, calendarDate.day).toString() === date.toString(),
+    );
+    const startSlicingIndex = selectedDateIndex - calendarDate.date.getDay();
+    return calendarCell.slice(startSlicingIndex, startSlicingIndex + 7);
+  }, [calendarType, calendarDate, calendarCell]);
+
+  const onScrollEndDrag = (isPrev: boolean) => {
+    const newDate = new Date(calendarDate.date);
+    const shouldAddValue = isPrev ? -7 : 7;
+    newDate.setDate(newDate.getDate() + shouldAddValue);
+    onChangeCalendarDate(newDate);
+  };
+
   return (
     <FlatList
-      data={calendarCell}
+      data={selectedWeek}
+      onScrollEndDrag={(e) => {
+        const isPrev = e.nativeEvent.contentOffset.x < 0;
+        onScrollEndDrag(isPrev);
+      }}
       renderItem={({ item }) => (
         <ThemedView
           style={{

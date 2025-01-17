@@ -13,6 +13,7 @@ const Calendar = () => {
         calendarDate={calendarDate}
         selectedDate={selectedDate}
         onChangeSelectedDate={onChangeSelectedDate}
+        onChangeCalendarDate={onChangeCalendarDate}
       />
     </ThemedView>
   );
