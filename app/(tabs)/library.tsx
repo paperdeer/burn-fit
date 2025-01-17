@@ -1,12 +1,14 @@
-import { SafeAreaView } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { useThemeColor } from '@/hooks/useThemeColor';
+import { SafeAreaView } from 'react-native';
 
-export default function HomeScreen() {
+const Library = () => {
   const backgroundColor = useThemeColor({}, 'background');
   return (
     <SafeAreaView style={{ backgroundColor }}>
-      <ThemedText>Home</ThemedText>
+      <ThemedText>Library</ThemedText>
     </SafeAreaView>
   );
-}
+};
+
+export default Library;
