@@ -1,6 +1,6 @@
 import { SafeAreaView } from 'react-native';
 import { useThemeColor } from '@/hooks/useThemeColor';
-import { ThemedText } from '@/components/ThemedText';
+import Calendar from '@/components/Calendar';
 
 export default function CalendarPage() {
   const backgroundColor = useThemeColor({}, 'background');
@@ -10,7 +10,7 @@ export default function CalendarPage() {
         backgroundColor,
       }}
     >
-      <ThemedText>Calendar</ThemedText>
+      <Calendar />
     </SafeAreaView>
   );
 }
