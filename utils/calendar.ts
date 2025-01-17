@@ -1,13 +1,13 @@
 import { CalendarDate } from '@/hooks/useCalendar';
 
-interface Cell {
+export interface CalendarCell {
   type: 'prev' | 'current' | 'next';
   day: number;
   date: Date;
 }
 
 export const createCalendarCell = (currentDate: CalendarDate) => {
-  const cells: Cell[] = [];
+  const cells: CalendarCell[] = [];
   const firstWeekOfTheMonth = new Date(currentDate.year, currentDate.month - 1, 1).getDay();
   // 이번달의 1일이 일요일이 아닌 경우
   if (firstWeekOfTheMonth > 0) {
